@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RelativeMapper">
+    
+    <resultMap type="Relative" id="RelativeResult">
+        <result property="relativeId"    column="relativeId"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="name"    column="name"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="phoneNumber"    column="phoneNumber"    />
+        <result property="address"    column="address"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectRelativeVo">
+        select relativeId, username, password, name, gender, age, phoneNumber, address, remark from relative
+    </sql>
+
+    <select id="selectRelativeList" parameterType="Relative" resultMap="RelativeResult">
+        <include refid="selectRelativeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="phoneNumber != null  and phoneNumber != ''"> and phoneNumber = #{phoneNumber}</if>
+        </where>
+    </select>
+    
+    <select id="selectRelativeById" parameterType="Long" resultMap="RelativeResult">
+        <include refid="selectRelativeVo"/>
+        where relativeId = #{relativeId}
+    </select>
+        
+    <insert id="insertRelative" parameterType="Relative" useGeneratedKeys="true" keyProperty="relativeId">
+        insert into relative
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="name != null">name,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="phoneNumber != null">phoneNumber,</if>
+            <if test="address != null">address,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="name != null">#{name},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="phoneNumber != null">#{phoneNumber},</if>
+            <if test="address != null">#{address},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRelative" parameterType="Relative">
+        update relative
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where relativeId = #{relativeId}
+    </update>
+
+    <delete id="deleteRelativeById" parameterType="Long">
+        delete from relative where relativeId = #{relativeId}
+    </delete>
+
+    <delete id="deleteRelativeByIds" parameterType="String">
+        delete from relative where relativeId in 
+        <foreach item="relativeId" collection="array" open="(" separator="," close=")">
+            #{relativeId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OldmanMapper">
+
+    <resultMap type="Oldman" id="OldmanResult">
+        <result property="oldmanId"    column="oldmanId"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="realName"    column="realName"    />
+        <result property="gender"    column="gender"    />
+        <result property="age"    column="age"    />
+        <result property="phoneNumber"    column="phoneNumber"    />
+        <result property="address"    column="address"    />
+        <result property="beginTime"    column="beginTime"    />
+        <result property="endTime"    column="endTime"    />
+        <result property="remark"    column="remark"    />
+        <result property="family"    column="family"    />
+        <result property="idNo"    column="idNo"    />
+        <result property="state"    column="state"    />
+        <result property="bedNo"    column="bedNo"    />
+        <result property="num"    column="num"    />
+    </resultMap>
+
+    <sql id="selectOldmanVo">
+        select oldmanId, username, password, realName, gender, age, phoneNumber, address, beginTime, endTime, remark, family, idNo, state, bedNo, num from oldman
+    </sql>
+
+    <select id="selectOldmanList" parameterType="Oldman" resultMap="OldmanResult">
+        <include refid="selectOldmanVo"/>
+        <where>
+            <if test="realName != null  and realName != ''"> and realName like concat('%', #{realName}, '%')</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="phoneNumber != null  and phoneNumber != ''"> and phoneNumber = #{phoneNumber}</if>
+        </where>
+    </select>
+
+    <select id="selectOldmanById" parameterType="Long" resultMap="OldmanResult">
+        <include refid="selectOldmanVo"/>
+        where oldmanId = #{oldmanId}
+    </select>
+
+    <insert id="insertOldman" parameterType="Oldman" useGeneratedKeys="true" keyProperty="oldmanId">
+        insert into oldman
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null">username,</if>
+            <if test="password != null">password,</if>
+            <if test="realName != null">realName,</if>
+            <if test="gender != null">gender,</if>
+            <if test="age != null">age,</if>
+            <if test="phoneNumber != null">phoneNumber,</if>
+            <if test="address != null">address,</if>
+            <if test="beginTime != null">beginTime,</if>
+            <if test="endTime != null">endTime,</if>
+            <if test="remark != null">remark,</if>
+            <if test="family != null">family,</if>
+            <if test="idNo != null">idNo,</if>
+            <if test="state != null">state,</if>
+            <if test="bedNo != null">bedNo,</if>
+            <if test="num != null">num,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null">#{username},</if>
+            <if test="password != null">#{password},</if>
+            <if test="realName != null">#{realName},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="age != null">#{age},</if>
+            <if test="phoneNumber != null">#{phoneNumber},</if>
+            <if test="address != null">#{address},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="family != null">#{family},</if>
+            <if test="idNo != null">#{idNo},</if>
+            <if test="state != null">#{state},</if>
+            <if test="bedNo != null">#{bedNo},</if>
+            <if test="num != null">#{num},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOldman" parameterType="Oldman">
+        update oldman
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null">username = #{username},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="realName != null">realName = #{realName},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="phoneNumber != null">phoneNumber = #{phoneNumber},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="beginTime != null">beginTime = #{beginTime},</if>
+            <if test="endTime != null">endTime = #{endTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="family != null">family = #{family},</if>
+            <if test="idNo != null">idNo = #{idNo},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="bedNo != null">bedNo = #{bedNo},</if>
+            <if test="num != null">num = #{num},</if>
+        </trim>
+        where oldmanId = #{oldmanId}
+    </update>
+
+    <delete id="deleteOldmanById" parameterType="Long">
+        delete from oldman where oldmanId = #{oldmanId}
+    </delete>
+
+    <delete id="deleteOldmanByIds" parameterType="String">
+        delete from oldman where oldmanId in
+        <foreach item="oldmanId" collection="array" open="(" separator="," close=")">
+            #{oldmanId}
+        </foreach>
+    </delete>
+
+    <select id="queryUser" resultMap="OldmanResult">
+        select realName,idNo,family,bedNo,beginTime,state,num,endTime from oldman where realName='李哲'
+    </select>
+
+</mapper>
